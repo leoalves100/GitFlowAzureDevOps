@@ -1,0 +1,41 @@
+{
+    "executionRoleArn": "arn:aws:iam::438021881816:role/ecsTaskExecutionRole",
+    "containerDefinitions": [
+      {
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/ecs/gitflow",
+            "awslogs-region": "us-east-1",
+            "awslogs-stream-prefix": "ecs"
+          }
+        },
+        "portMappings": [
+          {
+            "hostPort": 9000,
+            "protocol": "tcp",
+            "containerPort": 9000
+          }
+        ],
+        "environment": [
+          { "name": "AWS_REGION", "value": "${AWS_REGION}" },
+          { "name": "AWS_ACCESS_KEY_ID", "value": "${AWS_ACCESS_KEY_ID}" },
+          { "name": "AWS_SECRET_ACCESS_KEY", "value": "${AWS_SECRET_ACCESS_KEY}" },
+          { "name": "LOG_GROUP", "value": "${LOG_GROUP}" }
+        ],
+        "memory": $MEMORY,
+        "memoryReservation": 128,
+        "image": "${AWS_ECR_REPOSITORY}:${QRBUILD_VERSION}",
+        "name": "gitflow",
+        "essential": true
+      }
+    ],
+    "memory": "${MEMORY}",
+    "taskRoleArn": "arn:aws:iam::438021881816:role/ecsTaskExecutionRole",
+    "family": "gitflow",
+    "requiresCompatibilities": [
+      "FARGATE"
+    ],
+    "networkMode": "awsvpc",
+    "cpu": "${CPU}"
+  }
